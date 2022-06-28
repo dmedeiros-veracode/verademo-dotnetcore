@@ -1,11 +1,7 @@
 name: .NET
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+on: 
+  workflow_dispatch:
 jobs:
   build:
 
@@ -23,3 +19,55 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    - name: Veracode Upload And Scan
+      # You may pin to the exact commit or the version.
+      # uses: veracode/veracode-uploadandscan-action@4cd3f8b5fba1a0511b7dc17b55d85f16ec69cbf7
+      uses: veracode/veracode-uploadandscan-action@0.2.3
+      with:
+        # appname
+        appname: ${{ github.repository }}
+        # createprofile
+        # createprofile: # default is true
+        # filepath
+        # filepath: 
+        # version
+        version: ${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
+        # vid
+        vid: ${{github.vid}}
+        # vkey
+        vkey: ${{github.vkey}}
+        # true or flase
+        # createsandbox: # optional
+        # name of the sandbox
+        # sandboxname: # optional
+        # wait X minutes for the scan to complete
+        # scantimeout: # optional
+        # modules to exclude from module selection
+        # exclude: # optional
+        # modules to include in module selection
+        # include: # optional
+        # business criticality - policy selection
+        # criticality: # optional
+        # filename pattern
+        # pattern: # optional
+        # replacement
+        # replacement: # optional
+        # specify to scan in a sandbox
+        # sandboxid: # optional
+        # All top level modules
+        # scanallnonfataltoplevelmodules: # optional
+        # platform selected modules
+        # selected: # optional
+        # selected modules like from previous scan
+        # selectedpreviously: # optional
+        # teams
+        # teams: # optional
+        # teams
+        # toplevel: # optional
+        # automatically delete the current scan if there are any errors when uploading files or starting the scan
+        # deleteincompletescan: # optional
+        # specify version of the Java API Wrapper; default is latest
+        # javawrapperversion: # optional
+        # show detailed diagnostic information, which you can use for debugging, in the output.
+        # debug: # optional
